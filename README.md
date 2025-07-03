@@ -5,7 +5,9 @@ Currently provided are a "QuickStart" example for authenticating and using the S
 as well as a fully-functioning (if still under development) "drivemaster" application
 that provides upload to, download from, and listing of Google Drive folders.
 
-To use either application, authentication tokens need to be created.
+To use either application, the user must have client credentials for an approved client
+application, and the authentication tokens need to be created using those credentials.
+
 To create the tokens, the application must be run interactively.
 If the tokens are not present or are invalid, the application will launch
 the default browser with a Google SSO prompt.
