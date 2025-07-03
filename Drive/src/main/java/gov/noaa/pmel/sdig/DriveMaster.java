@@ -47,7 +47,24 @@ import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/* class to demonstrate use of Drive API */
+/** This application provides upload to, download from, and listing of
+ * the user's Google Drive folders.
+ *
+ * To use the application, authentication tokens need to be created.
+ * To create the tokens, the application must be run interactively.
+ * If the tokens are not present or are invalid, the application will launch
+ * the default browser with a Google SSO prompt.
+ * If the user is not logged into their Google account in the default browser,
+ * then the user must either log in separately, or paste the URL provided in
+ * the console into a browser window in the browser in which the user is logged in.
+ *
+ * The "Access blocked: cnsd-dev-mail-test can only be used within its organization"
+ * error message on the sign-in page indicates that the user is not logged into their
+ * Google account in the browser being used.
+ *
+ * Once the tokens are created, the application can be run in a non-interactive,
+ * scripted mode.
+*/
 public class DriveMaster extends CLClient {
 
     private enum EXISTING_OPTIONS {

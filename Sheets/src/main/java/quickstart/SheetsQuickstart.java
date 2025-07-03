@@ -1,3 +1,5 @@
+package quickstart;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -28,6 +30,28 @@ import java.time.Clock;
 import java.util.Collections;
 import java.util.List;
 
+/** Provides a sample application for interacting with Google Sheets.
+ * It currently prints the 2nd and 4th column values for all the rows in
+ * a Google Sheets file called "dev test prototype."
+ *
+ * The details, at minimum the file name, will need to be changed to run successfully.
+ *
+ * In order to use the application, authentication tokens must be created.
+ * Currently, two separate tokens must be created for this application:
+ * the first for the Drive API (to find the Sheets file), and the second
+ * for the Sheets API to access the file.
+ * To create the tokens, the application must be run interactively.
+ * If the tokens are not present or are invalid, the application will launch
+ * the default browser with a Google SSO prompt.
+ * If the user is not logged into their Google account in the default browser,
+ * then the user must either log in separately, or paste the URL provided in
+ * the console into a browser window in the browser in which the user is logged in.
+ *
+ * The "Access blocked: cnsd-dev-mail-test can only be used within its organization"
+ * error message on the sign-in page indicates that the user is not logged into their
+ * Google account in the browser being used.
+ *
+ */
 public class SheetsQuickstart {
     private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -70,7 +94,8 @@ public class SheetsQuickstart {
                 .setAccessType("offline")
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        return credential;
     }
 
     private static File getFileLike(Drive service, String name_match) throws IOException {
