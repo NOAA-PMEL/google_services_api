@@ -1,0 +1,99 @@
+<!-- Gemini-generated Ant build file. -->
+<project name="google_services_api" default="all" basedir=".">
+    <description>
+        Build file for the Google Services API project.
+    </description>
+
+    <!-- Global properties for this build -->
+    <property name="build.dir" location="build.ant"/>
+    <property name="dist.dir" location="dist.ant"/>
+    <property name="libs.dir" location="libs"/>
+
+    <!-- Define the classpath to include all JARs in the main libs directory -->
+    <path id="project.classpath">
+        <fileset dir="${libs.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Target to clean up previous build artifacts -->
+    <target name="clean" description="Clean up the build and dist directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <!-- Target to create the build and dist directories -->
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${build.dir}/sheets"/>
+        <mkdir dir="${build.dir}/drive"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Targets for the Sheets Quickstart                                   -->
+    <!-- =================================================================== -->
+
+    <target name="compile-sheets" depends="init" description="Compile the Sheets source code">
+        <!-- 
+            Compile the Sheets source code. The basedir is set to the 'Sheets' 
+            subdirectory, and the srcdir points to its specific source root.
+        -->
+        <javac destdir="${build.dir}/sheets" classpathref="project.classpath" includeantruntime="false">
+            <src path="Sheets/src/main/java"/>
+            <include name="quickstart/SheetsQuickstart.java"/>
+        </javac>
+    </target>
+
+    <target name="jar-sheets" depends="compile-sheets" description="Create the JAR file for Sheets">
+        <jar destfile="${dist.dir}/sheets.jar" basedir="${build.dir}/sheets">
+            <manifest>
+                <attribute name="Main-Class" value="quickstart.SheetsQuickstart"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <!-- Add config and credentials to the root of the JAR -->
+            <fileset dir="config"/>
+            <fileset dir="credentials"/>
+            <!-- Assumes dependencies are in a top-level 'libs' folder -->
+            <zipgroupfileset dir="${libs.dir}" includes="**/*.jar"/>
+        </jar>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Targets for the Drive Master                                        -->
+    <!-- =================================================================== -->
+
+    <target name="compile-drive" depends="init" description="Compile the Drive source code">
+        <!-- 
+            Compile the Drive source code. The basedir is set to the 'Drive' 
+            subdirectory, and the srcdir points to its specific source root.
+        -->
+        <javac destdir="${build.dir}/drive" classpathref="project.classpath" includeantruntime="false">
+             <src path="Drive/src/main/java"/>
+             <include name="gov/noaa/pmel/sdig/DriveMaster.java"/>
+        </javac>
+    </target>
+
+    <target name="jar-drive" depends="compile-drive" description="Create the JAR file for Drive">
+        <jar destfile="${dist.dir}/drive.jar" basedir="${build.dir}/drive">
+            <manifest>
+                <attribute name="Main-Class" value="gov.noaa.pmel.sdig.DriveMaster"/>
+                 <attribute name="Class-Path" value="."/>
+            </manifest>
+            <!-- Add config and credentials to the root of the JAR -->
+            <fileset dir="config"/>
+            <fileset dir="credentials"/>
+            <!-- Assumes dependencies are in a top-level 'libs' folder -->
+            <zipgroupfileset dir="${libs.dir}" includes="**/*.jar"/>
+        </jar>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Main target to build everything                                     -->
+    <!-- =================================================================== -->
+
+    <target name="all" depends="jar-sheets, jar-drive" description="Builds both the Sheets and Drive JAR files">
+    </target>
+
+</project>
+
